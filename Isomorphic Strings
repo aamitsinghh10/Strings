@@ -1,0 +1,39 @@
+class Solution {
+public:
+    bool isIsomorphic(string s, string t) 
+    {
+        int count1[256]={0};
+        int count2[256]={0};
+        
+        for(int i=0;i<s.size();i++)
+        {
+            if(count1[s[i]]!=count2[t[i]])//when words don't match
+                return false; 
+                
+                count1[s[i]]=i+1;
+                count2[t[i]]=i+1;
+            
+        }
+        return true;
+    }
+};
+
+//using hashmap
+
+class Solution {
+public:
+    bool isIsomorphic(string s, string t) {
+        unordered_map<char, int> mp, mp1;
+        unordered_map<char, char> mp2;
+        for(int i = 0; i < s.size(); i++){
+            if(mp[s[i]] > 0 or mp1[t[i]] > 0){
+                if(mp2[s[i]] != t[i])
+                    return false;
+            }
+            mp[s[i]]++;
+            mp1[t[i]]++;
+            mp2[s[i]] = t[i];
+        }
+        return true;
+    }
+};
