@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int longestPalindrome(string s) 
+    {
+        unordered_map<char,int> mp;
+        int ans=0;
+        bool flag=false;
+        
+        for(int i=0;i<s.size();i++)//storing the frequency of every character in the map
+        {
+            mp[s[i]]++;
+        }
+        int count=0;
+        
+        for(auto i:mp)//traversing the map
+        {
+            if(i.second%2==0)//when the frequency of char is even
+            {
+                ans+=i.second;
+            }
+            else   //when the freq of chars is odd
+            {
+                flag=true;
+                ans+=i.second-1;
+            }
+                
+        }
+        if(flag==true)//if we get odd character then one of them is in center
+            ans+=1;
+        
+      return ans;  
+    }
+};
