@@ -1,0 +1,43 @@
+class Solution {
+public:
+    string shortestPalindrome(string s)
+    {
+        string rev_s = s;//reverse of current string
+        reverse(rev_s.begin(),rev_s.end());//making reverse of string s
+        
+        string combined_str=s+'#'+rev_s;
+        
+        int n=combined_str.size();
+        
+        int lps[n];//longest prefix suffix Array
+        
+        int i=1;
+        int len = 0;//length of previous longest prefix suffix
+        lps[0] = 0;// lps always starts with 0
+       
+        while(i<n)//it runs from 1 to n-1
+        {
+            if(combined_str[i] == combined_str[len])
+            {
+                len++;
+                lps[i] = len;
+                i++;
+            }
+            else
+            {
+                if(len>0)
+                    len = lps[len-1];
+                else{
+                    lps[i] = 0;
+                    i++;
+                }
+            }
+        }
+        
+        int m = s.size();
+        
+        string ans = s.substr(lps[n-1],m-n+1);//start from lps array size and go to remaining chars
+        reverse(ans.begin(),ans.end());//reverse remaining chars and add in front of string s
+        return ans+s;
+    }
+};
