@@ -1,0 +1,58 @@
+class Solution {
+public:
+    vector<string> fullJustify(vector<string>& words, int maxWidth) 
+    {
+         vector<string> res;//Basically to store each line
+         int i = 0;//pointing to starting word of index 0
+      
+        while (i < words.size())
+        {
+             int wc = words[i].length();//word_count
+             int j = i + 1;//always greater then i (Upto which)
+
+             int candidates = 0;//intially number of words entered is zero
+
+         while (j < words.size() && wc + candidates + words[j].length() + 1 <= maxWidth)//condition to insert other word
+         {
+             wc += words[j].length();
+             candidates++;
+             j++;
+         }
+
+         int vacant_spaces = maxWidth - wc;//number of vacant spaces in a line left
+
+         int atleast = candidates == 0 ? 0 : vacant_spaces / candidates;//atleast this number of spaces are available after every word in a line
+         int extra = candidates == 0 ? 0 : vacant_spaces % candidates;//extra spaces left which is to be inserted in front
+
+         if (j == words.size())//when j reaches to end
+         {
+             atleast = 1;
+             extra = 0;
+         }
+
+         string temp="";
+
+         for (int k = i; k < j; k++) 
+         {
+             temp+=words[k];
+             if (k == j - 1)break;
+        
+             for (int e = 0; e < atleast; e++)
+                 temp+=" ";
+        
+             if (extra > 0) //when extra spaces are available
+             {
+                temp+=" ";//space added to temp and decrement extra space available
+                extra--;
+             }
+          }
+
+          while (temp.length() < maxWidth)temp+=" ";//when their is only 1 word in line all other are spaces or last line case
+
+          res.push_back(temp);
+
+          i = j;
+      }
+    return res;
+    }
+};
