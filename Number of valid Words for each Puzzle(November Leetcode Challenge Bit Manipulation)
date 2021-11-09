@@ -1,0 +1,50 @@
+class Solution {
+public:
+    vector<int> findNumOfValidWords(vector<string>& words, vector<string>& puzzles) 
+    {
+        unordered_map<char,vector<int>> mp;
+        
+        for(string word:words)//for words
+        {
+            int mask=0;
+            for(char ch:word)
+            {
+                int bit=ch-'a';//show 0th bit if 'a',1th for 'b'..so on.
+                mask=mask | (1<<bit);
+            }
+            
+             set<char> unique;/* to store only unique values, here we are storing the mask in every char that starts with ch, we are precalculating it to avoid it calculating the mask for every character every time (if we do this then we are repeating some tasks, hence pre-store the mask for all words that starts with a char in puzzle*/
+        
+             for(char ch:word)
+             {
+                 if(unique.find(ch)!=unique.end())
+                     continue;
+                     unique.insert(ch);
+                 
+                 mp[ch].push_back(mask);//pushing all words that contain words for every character in map
+             }
+        }
+        vector<int> res;//to store count of all valid words
+        
+        for(string puzzle:puzzles)//for puzzles
+        {
+            int pmask=0;
+            for(char ch:puzzle)
+            {
+                int bit=ch-'a';
+                pmask=pmask | (1<<bit);
+            }
+            char first_char=puzzle[0];
+            int count=0;
+            
+            vector<int> wordstocheck=mp[first_char];//fetch all the word masks that have first char in puzzle(First Condition)
+            for(int wmask:wordstocheck)//Second Condition
+            {
+                if((wmask & pmask)==wmask)
+                    count++;
+            }
+            res.push_back(count);
+        }
+        return res;
+    }
+};
